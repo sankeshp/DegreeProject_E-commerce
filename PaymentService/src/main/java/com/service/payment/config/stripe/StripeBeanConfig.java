@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class StripeBeanConfig {
-    private StripeConfig stripeConfig;
+    private final StripeConfig stripeConfig;
 
     public StripeBeanConfig(StripeConfig stripeConfig) {
         this.stripeConfig = stripeConfig;

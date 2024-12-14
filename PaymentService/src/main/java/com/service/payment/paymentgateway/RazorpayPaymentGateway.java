@@ -3,7 +3,7 @@ package com.service.payment.paymentgateway;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
-import com.service.payment.dto.Order;
+import com.service.payment.dto.OrderDTO;
 import com.service.payment.exceptions.PaymentLinkGenerationException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -14,27 +14,19 @@ import java.time.ZoneId;
 @Component
 public class RazorpayPaymentGateway implements IPaymentGateway {
 
-    private RazorpayClient razorpayClient;
+    private final RazorpayClient razorpayClient;
 
     public RazorpayPaymentGateway(RazorpayClient razorpayClient) {
         this.razorpayClient = razorpayClient;
     }
 
     @Override
-    public String generatePaymentLink(Order order) throws PaymentLinkGenerationException {
+    public String generatePaymentLink(OrderDTO orderDTO) throws PaymentLinkGenerationException {
         String paymentLink = null;
         Long expireBy = LocalDateTime.now().plusDays(1).atZone(ZoneId.of("Asia/Kolkata")).toInstant().toEpochMilli();
 
         try {
-            JSONObject paymentLinkRequest = new JSONObject();
-            paymentLinkRequest.put("amount", order.getTotalAmount());
-            paymentLinkRequest.put("currency", "INR");
-            paymentLinkRequest.put("expire_by", expireBy);
-            paymentLinkRequest.put("reference_id", order.getOrderId());
-            paymentLinkRequest.put("description", "Payment service requesting payment for orderId : " + order.getOrderId());
-
-            paymentLinkRequest.put("callback_url", "http://localhost:8080");
-            paymentLinkRequest.put("callback_method", "get");
+            JSONObject paymentLinkRequest = getJsonObject(orderDTO, expireBy);
 
             PaymentLink payment = razorpayClient.paymentLink.create(paymentLinkRequest);
             paymentLink = payment.get("short_url");
@@ -42,5 +34,18 @@ public class RazorpayPaymentGateway implements IPaymentGateway {
             throw new PaymentLinkGenerationException(ex);
         }
         return paymentLink;
+    }
+
+    private static JSONObject getJsonObject(OrderDTO orderDTO, Long expireBy) {
+        JSONObject paymentLinkRequest = new JSONObject();
+        paymentLinkRequest.put("amount", orderDTO.getTotalAmount());
+        paymentLinkRequest.put("currency", "INR");
+        paymentLinkRequest.put("expire_by", expireBy);
+        paymentLinkRequest.put("reference_id", orderDTO.getOrderId());
+        paymentLinkRequest.put("description", "Payment service requesting payment for orderId : " + orderDTO.getOrderId());
+
+        paymentLinkRequest.put("callback_url", "http://localhost:8080");
+        paymentLinkRequest.put("callback_method", "get");
+        return paymentLinkRequest;
     }
 }

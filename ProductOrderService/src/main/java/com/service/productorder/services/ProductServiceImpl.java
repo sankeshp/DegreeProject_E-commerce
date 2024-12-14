@@ -5,9 +5,9 @@ import com.service.productorder.entites.Category;
 import com.service.productorder.entites.Product;
 import com.service.productorder.exceptions.APIException;
 import com.service.productorder.exceptions.ResourceNotFoundException;
-import com.service.productorder.payloads.CartDTO;
-import com.service.productorder.payloads.ProductDTO;
-import com.service.productorder.payloads.ProductResponse;
+import com.service.productorder.dtos.CartDTO;
+import com.service.productorder.dtos.ProductDTO;
+import com.service.productorder.dtos.ProductResponseDTO;
 import com.service.productorder.repositories.CartRepo;
 import com.service.productorder.repositories.CategoryRepo;
 import com.service.productorder.repositories.ProductRepo;
@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+	public ProductResponseDTO getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 
 		Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending()
 				: Sort.by(sortBy).descending();
@@ -101,21 +101,21 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> productDTOs = products.stream().map(product -> modelMapper.map(product, ProductDTO.class))
 				.collect(Collectors.toList());
 
-		ProductResponse productResponse = new ProductResponse();
+		ProductResponseDTO productResponseDTO = new ProductResponseDTO();
 
-		productResponse.setContent(productDTOs);
-		productResponse.setPageNumber(pageProducts.getNumber());
-		productResponse.setPageSize(pageProducts.getSize());
-		productResponse.setTotalElements(pageProducts.getTotalElements());
-		productResponse.setTotalPages(pageProducts.getTotalPages());
-		productResponse.setLastPage(pageProducts.isLast());
+		productResponseDTO.setContent(productDTOs);
+		productResponseDTO.setPageNumber(pageProducts.getNumber());
+		productResponseDTO.setPageSize(pageProducts.getSize());
+		productResponseDTO.setTotalElements(pageProducts.getTotalElements());
+		productResponseDTO.setTotalPages(pageProducts.getTotalPages());
+		productResponseDTO.setLastPage(pageProducts.isLast());
 
-		return productResponse;
+		return productResponseDTO;
 	}
 
 	@Override
-	public ProductResponse searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy,
-			String sortOrder) {
+	public ProductResponseDTO searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy,
+											   String sortOrder) {
 
 		Category category = categoryRepo.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
@@ -136,20 +136,20 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> productDTOs = products.stream().map(p -> modelMapper.map(p, ProductDTO.class))
 				.collect(Collectors.toList());
 
-		ProductResponse productResponse = new ProductResponse();
+		ProductResponseDTO productResponseDTO = new ProductResponseDTO();
 
-		productResponse.setContent(productDTOs);
-		productResponse.setPageNumber(pageProducts.getNumber());
-		productResponse.setPageSize(pageProducts.getSize());
-		productResponse.setTotalElements(pageProducts.getTotalElements());
-		productResponse.setTotalPages(pageProducts.getTotalPages());
-		productResponse.setLastPage(pageProducts.isLast());
+		productResponseDTO.setContent(productDTOs);
+		productResponseDTO.setPageNumber(pageProducts.getNumber());
+		productResponseDTO.setPageSize(pageProducts.getSize());
+		productResponseDTO.setTotalElements(pageProducts.getTotalElements());
+		productResponseDTO.setTotalPages(pageProducts.getTotalPages());
+		productResponseDTO.setLastPage(pageProducts.isLast());
 
-		return productResponse;
+		return productResponseDTO;
 	}
 
 	@Override
-	public ProductResponse searchProductByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+	public ProductResponseDTO searchProductByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 		Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending()
 				: Sort.by(sortBy).descending();
 
@@ -166,16 +166,16 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> productDTOs = products.stream().map(p -> modelMapper.map(p, ProductDTO.class))
 				.collect(Collectors.toList());
 
-		ProductResponse productResponse = new ProductResponse();
+		ProductResponseDTO productResponseDTO = new ProductResponseDTO();
 
-		productResponse.setContent(productDTOs);
-		productResponse.setPageNumber(pageProducts.getNumber());
-		productResponse.setPageSize(pageProducts.getSize());
-		productResponse.setTotalElements(pageProducts.getTotalElements());
-		productResponse.setTotalPages(pageProducts.getTotalPages());
-		productResponse.setLastPage(pageProducts.isLast());
+		productResponseDTO.setContent(productDTOs);
+		productResponseDTO.setPageNumber(pageProducts.getNumber());
+		productResponseDTO.setPageSize(pageProducts.getSize());
+		productResponseDTO.setTotalElements(pageProducts.getTotalElements());
+		productResponseDTO.setTotalPages(pageProducts.getTotalPages());
+		productResponseDTO.setLastPage(pageProducts.isLast());
 
-		return productResponse;
+		return productResponseDTO;
 	}
 
 	@Override
@@ -208,7 +208,7 @@ public class ProductServiceImpl implements ProductService {
 
 			return cartDTO;
 
-		}).collect(Collectors.toList());
+		}).toList();
 
 		cartDTOs.forEach(cart -> cartService.updateProductInCarts(cart.getCartId(), productId));
 

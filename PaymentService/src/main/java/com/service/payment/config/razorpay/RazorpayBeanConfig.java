@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RazorpayBeanConfig {
 
-    private RazorpayConfig razorpayConfig;
+    private final RazorpayConfig razorpayConfig;
 
     public RazorpayBeanConfig(RazorpayConfig razorpayConfig) {
         this.razorpayConfig = razorpayConfig;

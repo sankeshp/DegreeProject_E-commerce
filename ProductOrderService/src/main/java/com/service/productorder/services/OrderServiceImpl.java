@@ -3,10 +3,10 @@ package com.service.productorder.services;
 import com.service.productorder.entites.*;
 import com.service.productorder.exceptions.APIException;
 import com.service.productorder.exceptions.ResourceNotFoundException;
-import com.service.productorder.payloads.OrderDTO;
-import com.service.productorder.payloads.OrderItemDTO;
-import com.service.productorder.payloads.OrderResponse;
-import com.service.productorder.payloads.User;
+import com.service.productorder.dtos.OrderDTO;
+import com.service.productorder.dtos.OrderItemDTO;
+import com.service.productorder.dtos.OrderResponseDTO;
+import com.service.productorder.dtos.UserDTO;
 import com.service.productorder.repositories.*;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -26,9 +26,6 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-	//@Autowired
-	//public UserRepo userRepo;
-
 	@Autowired
 	public CartRepo cartRepo;
 
@@ -36,22 +33,16 @@ public class OrderServiceImpl implements OrderService {
 	public OrderRepo orderRepo;
 
 	@Autowired
-	private PaymentRepo paymentRepo;
-
-	@Autowired
 	public OrderItemRepo orderItemRepo;
-
-	@Autowired
-	public CartItemRepo cartItemRepo;
-
-	//@Autowired
-	//public UserService userService;
 
 	@Autowired
 	public CartService cartService;
 
 	@Autowired
 	public ModelMapper modelMapper;
+
+	@Autowired
+	public PaymentService paymentService;
 
 	@Override
 	public OrderDTO placeOrder(Long userId, Long cartId, String paymentMethod) {
@@ -70,19 +61,11 @@ public class OrderServiceImpl implements OrderService {
 		order.setTotalAmount(cart.getTotalPrice());
 		order.setOrderStatus("Order Accepted !");
 
-		Payment payment = new Payment();
-		payment.setOrder(order);
-		payment.setPaymentMethod(paymentMethod);
-
-		payment = paymentRepo.save(payment);
-
-		order.setPayment(payment);
-
 		Order savedOrder = orderRepo.save(order);
 
 		List<CartItem> cartItems = cart.getCartItems();
 
-		if (cartItems.size() == 0) {
+		if (cartItems.isEmpty()) {
 			throw new APIException("Cart is empty");
 		}
 
@@ -112,22 +95,26 @@ public class OrderServiceImpl implements OrderService {
 			product.setQuantity(product.getQuantity() - quantity);
 		});
 
-		OrderDTO orderDTO = modelMapper.map(savedOrder, OrderDTO.class);
-		
+		Payment payment = paymentService.makePayment(order,paymentMethod);
+
+		order.setPayment(payment);
+
+		OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+
 		orderItems.forEach(item -> orderDTO.getOrderItems().add(modelMapper.map(item, OrderItemDTO.class)));
 
 		return orderDTO;
 	}
 
 	@Override
-	public List<OrderDTO> getOrdersByUser(User user) {
-		List<Order> orders = orderRepo.findAllByUserId(user.getUserId());
+	public List<OrderDTO> getOrdersByUser(UserDTO userDTO) {
+		List<Order> orders = orderRepo.findAllByUserId(userDTO.getUserId());
 
 		List<OrderDTO> orderDTOs = orders.stream().map(order -> modelMapper.map(order, OrderDTO.class))
 				.collect(Collectors.toList());
 
-		if (orderDTOs.size() == 0) {
-			throw new APIException("No orders placed yet by the user with email: " + user.getEmail());
+		if (orderDTOs.isEmpty()) {
+			throw new APIException("No orders placed yet by the user with email: " + userDTO.getEmail());
 		}
 
 		return orderDTOs;
@@ -146,7 +133,16 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderResponse getAllOrders(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+	public OrderDTO getOrder(Long orderId) {
+		Order order = orderRepo.findOrderByOrderId(orderId);
+		if (order == null) {
+			throw new ResourceNotFoundException("Order", "orderId", orderId);
+		}
+		return modelMapper.map(order, OrderDTO.class);
+	}
+
+	@Override
+	public OrderResponseDTO getAllOrders(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 
 		Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending()
 				: Sort.by(sortBy).descending();
@@ -160,20 +156,20 @@ public class OrderServiceImpl implements OrderService {
 		List<OrderDTO> orderDTOs = orders.stream().map(order -> modelMapper.map(order, OrderDTO.class))
 				.collect(Collectors.toList());
 		
-		if (orderDTOs.size() == 0) {
+		if ( orderDTOs.isEmpty()) {
 			throw new APIException("No orders placed yet by the users");
 		}
 
-		OrderResponse orderResponse = new OrderResponse();
+		OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
 		
-		orderResponse.setContent(orderDTOs);
-		orderResponse.setPageNumber(pageOrders.getNumber());
-		orderResponse.setPageSize(pageOrders.getSize());
-		orderResponse.setTotalElements(pageOrders.getTotalElements());
-		orderResponse.setTotalPages(pageOrders.getTotalPages());
-		orderResponse.setLastPage(pageOrders.isLast());
+		orderResponseDTO.setContent(orderDTOs);
+		orderResponseDTO.setPageNumber(pageOrders.getNumber());
+		orderResponseDTO.setPageSize(pageOrders.getSize());
+		orderResponseDTO.setTotalElements(pageOrders.getTotalElements());
+		orderResponseDTO.setTotalPages(pageOrders.getTotalPages());
+		orderResponseDTO.setLastPage(pageOrders.isLast());
 		
-		return orderResponse;
+		return orderResponseDTO;
 	}
 
 	@Override

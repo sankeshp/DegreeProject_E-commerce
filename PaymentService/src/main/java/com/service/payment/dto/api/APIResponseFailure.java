@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 @Getter
 public class APIResponseFailure extends APIResponse {
-    private String message;
-    private String stackTrace;
+    private final String message;
+    private final String stackTrace;
 
     public APIResponseFailure(Exception ex) {
         this.message = ex.getMessage();

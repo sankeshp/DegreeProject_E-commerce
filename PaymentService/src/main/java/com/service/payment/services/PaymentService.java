@@ -1,6 +1,6 @@
 package com.service.payment.services;
 
-import com.service.payment.dto.Order;
+import com.service.payment.dto.OrderDTO;
 import com.service.payment.exceptions.InvalidPaymentGatewayException;
 import com.service.payment.exceptions.PaymentLinkGenerationException;
 import com.service.payment.models.PGVendor;
@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentService {
-    private PaymentGatewaySelectorStrategy paymentGatewaySelectorStrategy;
+
+    private final PaymentGatewaySelectorStrategy paymentGatewaySelectorStrategy;
 
     @Autowired
     private OrderService orderService;
@@ -22,9 +23,9 @@ public class PaymentService {
 
     public String generatePaymentLink(Long orderId, PGVendor pgVendor) throws PaymentLinkGenerationException, InvalidPaymentGatewayException {
 
-        Order order = orderService.getOrderById(orderId);
+        OrderDTO orderDTO = orderService.getOrderById(orderId);
 
         IPaymentGateway paymentGateway = paymentGatewaySelectorStrategy.getPaymentGateway(pgVendor);
-        return paymentGateway.generatePaymentLink(order);
+        return paymentGateway.generatePaymentLink(orderDTO);
     }
 }

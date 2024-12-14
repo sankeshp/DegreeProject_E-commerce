@@ -5,8 +5,8 @@ import com.service.productorder.entites.CartItem;
 import com.service.productorder.entites.Product;
 import com.service.productorder.exceptions.APIException;
 import com.service.productorder.exceptions.ResourceNotFoundException;
-import com.service.productorder.payloads.CartDTO;
-import com.service.productorder.payloads.ProductDTO;
+import com.service.productorder.dtos.CartDTO;
+import com.service.productorder.dtos.ProductDTO;
 import com.service.productorder.repositories.CartItemRepo;
 import com.service.productorder.repositories.CartRepo;
 import com.service.productorder.repositories.ProductRepo;
@@ -87,23 +87,21 @@ public class CartServiceImpl implements CartService {
 	public List<CartDTO> getAllCarts() {
 		List<Cart> carts = cartRepo.findAll();
 
-		if (carts.size() == 0) {
+		if (carts.isEmpty()) {
 			throw new APIException("No cart exists");
 		}
 
-		List<CartDTO> cartDTOs = carts.stream().map(cart -> {
-			CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+        return carts.stream().map(cart -> {
+            CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
 
-			List<ProductDTO> products = cart.getCartItems().stream()
-					.map(p -> modelMapper.map(p.getProduct(), ProductDTO.class)).collect(Collectors.toList());
+            List<ProductDTO> products = cart.getCartItems().stream()
+                    .map(p -> modelMapper.map(p.getProduct(), ProductDTO.class)).collect(Collectors.toList());
 
-			cartDTO.setProducts(products);
+            cartDTO.setProducts(products);
 
-			return cartDTO;
+            return cartDTO;
 
-		}).collect(Collectors.toList());
-
-		return cartDTOs;
+        }).collect(Collectors.toList());
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.service.productorder.services;
 
-import com.service.productorder.payloads.CartDTO;
-
+import com.service.productorder.dtos.CartDTO;
 import java.util.List;
 
 public interface CartService {

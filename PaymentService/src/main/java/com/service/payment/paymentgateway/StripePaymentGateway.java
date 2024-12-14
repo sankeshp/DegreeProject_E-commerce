@@ -1,6 +1,6 @@
 package com.service.payment.paymentgateway;
 
-import com.service.payment.dto.Order;
+import com.service.payment.dto.OrderDTO;
 import com.stripe.StripeClient;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentLink;
@@ -11,16 +11,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StripePaymentGateway implements IPaymentGateway{
-    private StripeClient stripeClient;
-    private StripeConfig stripeConfig;
+    private final StripeClient stripeClient;
 
-    public StripePaymentGateway(StripeClient stripeClient, StripeConfig stripeConfig) {
+    public StripePaymentGateway(StripeClient stripeClient) {
         this.stripeClient = stripeClient;
-        this.stripeConfig = stripeConfig;
     }
 
     @Override
-    public String generatePaymentLink(Order order) throws PaymentLinkGenerationException {
+    public String generatePaymentLink(OrderDTO orderDTO) throws PaymentLinkGenerationException {
         String paymentLink = null;
 
         try{
@@ -28,7 +26,7 @@ public class StripePaymentGateway implements IPaymentGateway{
                     PaymentLinkCreateParams.builder()
                             .addLineItem(
                                     PaymentLinkCreateParams.LineItem.builder()
-                                            .setPrice(String.valueOf(order.getTotalAmount()))
+                                            .setPrice(String.valueOf(orderDTO.getTotalAmount()))
                                             .setQuantity(1L)
                                             .build()
                             )

@@ -4,8 +4,8 @@ import com.service.productorder.entites.Category;
 import com.service.productorder.entites.Product;
 import com.service.productorder.exceptions.APIException;
 import com.service.productorder.exceptions.ResourceNotFoundException;
-import com.service.productorder.payloads.CategoryDTO;
-import com.service.productorder.payloads.CategoryResponse;
+import com.service.productorder.dtos.CategoryDTO;
+import com.service.productorder.dtos.CategoryResponseDTO;
 import com.service.productorder.repositories.CategoryRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryResponse getCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+	public CategoryResponseDTO getCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 		Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending()
 				: Sort.by(sortBy).descending();
 
@@ -56,23 +56,23 @@ public class CategoryServiceImpl implements CategoryService {
 
 		List<Category> categories = pageCategories.getContent();
 
-		if (categories.size() == 0) {
+		if (categories.isEmpty()) {
 			throw new APIException("No category is created till now");
 		}
 
 		List<CategoryDTO> categoryDTOs = categories.stream()
 				.map(category -> modelMapper.map(category, CategoryDTO.class)).collect(Collectors.toList());
 
-		CategoryResponse categoryResponse = new CategoryResponse();
+		CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
 		
-		categoryResponse.setContent(categoryDTOs);
-		categoryResponse.setPageNumber(pageCategories.getNumber());
-		categoryResponse.setPageSize(pageCategories.getSize());
-		categoryResponse.setTotalElements(pageCategories.getTotalElements());
-		categoryResponse.setTotalPages(pageCategories.getTotalPages());
-		categoryResponse.setLastPage(pageCategories.isLast());
+		categoryResponseDTO.setContent(categoryDTOs);
+		categoryResponseDTO.setPageNumber(pageCategories.getNumber());
+		categoryResponseDTO.setPageSize(pageCategories.getSize());
+		categoryResponseDTO.setTotalElements(pageCategories.getTotalElements());
+		categoryResponseDTO.setTotalPages(pageCategories.getTotalPages());
+		categoryResponseDTO.setLastPage(pageCategories.isLast());
 		
-		return categoryResponse;
+		return categoryResponseDTO;
 	}
 
 	@Override

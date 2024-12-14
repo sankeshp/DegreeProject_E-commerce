@@ -2,9 +2,8 @@ package com.service.productorder.services;
 
 import com.service.productorder.entites.Order;
 import com.service.productorder.entites.Payment;
-import com.service.productorder.payloads.GeneratePaymentLinkRequestDTO;
-import com.service.productorder.payloads.GeneratePaymentLinkResponseDTO;
-import com.service.productorder.payloads.User;
+import com.service.productorder.dtos.GeneratePaymentLinkRequestDTO;
+import com.service.productorder.dtos.GeneratePaymentLinkResponseDTO;
 import com.service.productorder.repositories.PaymentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

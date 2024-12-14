@@ -1,6 +1,6 @@
 package com.service.productorder.config;
 
-import com.service.productorder.payloads.SendNotificationMessageDTO;
+import com.service.productorder.dtos.SendNotificationMessageDTO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
