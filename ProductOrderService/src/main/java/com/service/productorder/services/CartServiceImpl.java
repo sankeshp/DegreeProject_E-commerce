@@ -143,7 +143,7 @@ public class CartServiceImpl implements CartService {
 
 		cart.setTotalPrice(cartPrice + (cartItem.getProductPrice() * cartItem.getQuantity()));
 
-		cartItem = cartItemRepo.save(cartItem);
+		cartItemRepo.save(cartItem);
 	}
 
 	@Override
@@ -179,7 +179,7 @@ public class CartServiceImpl implements CartService {
 
 		cart.setTotalPrice(cartPrice + (cartItem.getProductPrice() * quantity));
 
-		cartItem = cartItemRepo.save(cartItem);
+		cartItemRepo.save(cartItem);
 
 		CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
 

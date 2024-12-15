@@ -50,20 +50,7 @@ public class UserServiceImpl implements UserService {
 			Role role = roleRepo.findById(AppConstants.USER_ID).get();
 			user.getRoles().add(role);
 
-			String country = userDTO.getAddress().getCountry();
-			String state = userDTO.getAddress().getState();
-			String city = userDTO.getAddress().getCity();
-			String pincode = userDTO.getAddress().getPincode();
-			String street = userDTO.getAddress().getStreet();
-			String buildingName = userDTO.getAddress().getBuildingName();
-
-			Address address = addressRepo.findByCountryAndStateAndCityAndPincodeAndStreetAndBuildingName(country, state,
-					city, pincode, street, buildingName);
-
-			if (address == null) {
-				address = new Address(country, state, city, pincode, street, buildingName);
-				address = addressRepo.save(address);
-			}
+			Address address = getAddress(userDTO);
 
 			user.setAddresses(List.of(address));
 			User registeredUser = userRepo.save(user);
@@ -138,21 +125,8 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(encodedPass);
 
 		if (userDTO.getAddress() != null) {
-			String country = userDTO.getAddress().getCountry();
-			String state = userDTO.getAddress().getState();
-			String city = userDTO.getAddress().getCity();
-			String pincode = userDTO.getAddress().getPincode();
-			String street = userDTO.getAddress().getStreet();
-			String buildingName = userDTO.getAddress().getBuildingName();
-
-			Address address = addressRepo.findByCountryAndStateAndCityAndPincodeAndStreetAndBuildingName(country, state,
-					city, pincode, street, buildingName);
-
-			if (address == null) {
-				address = new Address(country, state, city, pincode, street, buildingName);
-				address = addressRepo.save(address);
+				Address address = getAddress(userDTO);
 				user.setAddresses(List.of(address));
-			}
 		}
 
 		userDTO = modelMapper.map(user, UserDTO.class);
@@ -171,6 +145,25 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Optional<User> getUserByEmail(String email) {
 		return userRepo.findByEmail(email);
+	}
+
+	private Address getAddress(UserDTO userDTO) {
+		String country = userDTO.getAddress().getCountry();
+		String state = userDTO.getAddress().getState();
+		String city = userDTO.getAddress().getCity();
+		String pincode = userDTO.getAddress().getPincode();
+		String street = userDTO.getAddress().getStreet();
+		String buildingName = userDTO.getAddress().getBuildingName();
+
+        Address curAddress = addressRepo.findByCountryAndStateAndCityAndPincodeAndStreetAndBuildingName(country, state,
+                city, pincode, street, buildingName);
+
+		if (curAddress == null) {
+			curAddress = new Address(country, state, city, pincode, street, buildingName);
+			addressRepo.save(curAddress);
+		}
+
+		return curAddress;
 	}
 
 }

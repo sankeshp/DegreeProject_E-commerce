@@ -17,9 +17,9 @@ public class SwaggerConfig {
         return new OpenAPI().info(new Info().title("E-Commerce Application")
                         .description("Backend APIs for E-Commerce app")
                         .version("v1.0.0")
-                        .contact(new Contact().name("Sankesh Pathak").url("https://github.com/sankeshp/").email("sankeshspathak@gmail.com"))
+                        .contact(new Contact().name("Sankesh Pathak").url("https://github.com/demo/").email("demo@gmail.com"))
                         .license(new License().name("License").url("/")))
-                .externalDocs(new ExternalDocumentation().description("E-Commerce App Documentation")
+                .externalDocs(new ExternalDocumentation().description("Product and order service documentation")
                         .url("http://localhost:8080/swagger-ui/index.html"));
     }
 

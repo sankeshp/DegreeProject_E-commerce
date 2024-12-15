@@ -61,14 +61,14 @@ public class ProductServiceImpl implements ProductService {
 
 		List<Product> products = category.getProducts();
 
-		for (int i = 0; i < products.size(); i++) {
-			if (products.get(i).getProductName().equals(product.getProductName())
-					&& products.get(i).getDescription().equals(product.getDescription())) {
+        for (Product value : products) {
+            if (value.getProductName().equals(product.getProductName())
+                    && value.getDescription().equals(product.getDescription())) {
 
-				isProductNotPresent = false;
-				break;
-			}
-		}
+                isProductNotPresent = false;
+                break;
+            }
+        }
 
 		if (isProductNotPresent) {
 			product.setImage("default.png");
@@ -98,19 +98,7 @@ public class ProductServiceImpl implements ProductService {
 
 		List<Product> products = pageProducts.getContent();
 
-		List<ProductDTO> productDTOs = products.stream().map(product -> modelMapper.map(product, ProductDTO.class))
-				.collect(Collectors.toList());
-
-		ProductResponseDTO productResponseDTO = new ProductResponseDTO();
-
-		productResponseDTO.setContent(productDTOs);
-		productResponseDTO.setPageNumber(pageProducts.getNumber());
-		productResponseDTO.setPageSize(pageProducts.getSize());
-		productResponseDTO.setTotalElements(pageProducts.getTotalElements());
-		productResponseDTO.setTotalPages(pageProducts.getTotalPages());
-		productResponseDTO.setLastPage(pageProducts.isLast());
-
-		return productResponseDTO;
+		return getProductResponseDTO(pageProducts, products);
 	}
 
 	@Override
@@ -129,23 +117,11 @@ public class ProductServiceImpl implements ProductService {
 
 		List<Product> products = pageProducts.getContent();
 
-		if (products.size() == 0) {
+		if (products.isEmpty()) {
 			throw new APIException(category.getCategoryName() + " category doesn't contain any products !!!");
 		}
 
-		List<ProductDTO> productDTOs = products.stream().map(p -> modelMapper.map(p, ProductDTO.class))
-				.collect(Collectors.toList());
-
-		ProductResponseDTO productResponseDTO = new ProductResponseDTO();
-
-		productResponseDTO.setContent(productDTOs);
-		productResponseDTO.setPageNumber(pageProducts.getNumber());
-		productResponseDTO.setPageSize(pageProducts.getSize());
-		productResponseDTO.setTotalElements(pageProducts.getTotalElements());
-		productResponseDTO.setTotalPages(pageProducts.getTotalPages());
-		productResponseDTO.setLastPage(pageProducts.isLast());
-
-		return productResponseDTO;
+		return getProductResponseDTO(pageProducts, products);
 	}
 
 	@Override
@@ -159,23 +135,11 @@ public class ProductServiceImpl implements ProductService {
 
 		List<Product> products = pageProducts.getContent();
 		
-		if (products.size() == 0) {
+		if (products.isEmpty()) {
 			throw new APIException("Products not found with keyword: " + keyword);
 		}
 
-		List<ProductDTO> productDTOs = products.stream().map(p -> modelMapper.map(p, ProductDTO.class))
-				.collect(Collectors.toList());
-
-		ProductResponseDTO productResponseDTO = new ProductResponseDTO();
-
-		productResponseDTO.setContent(productDTOs);
-		productResponseDTO.setPageNumber(pageProducts.getNumber());
-		productResponseDTO.setPageSize(pageProducts.getSize());
-		productResponseDTO.setTotalElements(pageProducts.getTotalElements());
-		productResponseDTO.setTotalPages(pageProducts.getTotalPages());
-		productResponseDTO.setLastPage(pageProducts.isLast());
-
-		return productResponseDTO;
+		return getProductResponseDTO(pageProducts, products);
 	}
 
 	@Override
@@ -248,4 +212,19 @@ public class ProductServiceImpl implements ProductService {
 		return "Product with productId: " + productId + " deleted successfully !!!";
 	}
 
+	private ProductResponseDTO getProductResponseDTO(Page<Product> pageProducts, List<Product> products) {
+		List<ProductDTO> productDTOs = products.stream().map(p -> modelMapper.map(p, ProductDTO.class))
+				.collect(Collectors.toList());
+
+		ProductResponseDTO productResponseDTO = new ProductResponseDTO();
+
+		productResponseDTO.setContent(productDTOs);
+		productResponseDTO.setPageNumber(pageProducts.getNumber());
+		productResponseDTO.setPageSize(pageProducts.getSize());
+		productResponseDTO.setTotalElements(pageProducts.getTotalElements());
+		productResponseDTO.setTotalPages(pageProducts.getTotalPages());
+		productResponseDTO.setLastPage(pageProducts.isLast());
+
+		return productResponseDTO;
+	}
 }

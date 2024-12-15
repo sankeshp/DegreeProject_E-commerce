@@ -1,6 +1,5 @@
 package com.service.userauthentication.dtos;
 
-import com.service.userauthentication.entities.Address;
 import com.service.userauthentication.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;

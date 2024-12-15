@@ -44,7 +44,7 @@ public class RazorpayPaymentGateway implements IPaymentGateway {
         paymentLinkRequest.put("reference_id", orderDTO.getOrderId());
         paymentLinkRequest.put("description", "Payment service requesting payment for orderId : " + orderDTO.getOrderId());
 
-        paymentLinkRequest.put("callback_url", "http://localhost:8080");
+        paymentLinkRequest.put("callback_url", "http://localhost:8484");
         paymentLinkRequest.put("callback_method", "get");
         return paymentLinkRequest;
     }

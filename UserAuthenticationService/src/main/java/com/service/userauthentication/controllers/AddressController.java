@@ -39,7 +39,7 @@ public class AddressController {
 
 	@GetMapping("/addresses/{addressId}")
 	public ResponseEntity<AddressDTO> getAddress(@PathVariable Long addressId) {
-		logger.info("Getting address with ID: " + addressId);
+        logger.info("Getting address with ID: {}", addressId);
 		Object value = redisTemplate.opsForValue().get("getAddress_"+addressId);
 		if(value != null)
 			return new ResponseEntity<AddressDTO>((AddressDTO) value, HttpStatus.FOUND);

@@ -1,7 +1,6 @@
 package com.service.payment.dto.api;
 
 import lombok.Getter;
-
 import java.util.Arrays;
 
 @Getter
