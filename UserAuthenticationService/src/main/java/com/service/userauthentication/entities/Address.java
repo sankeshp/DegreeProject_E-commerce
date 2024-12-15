@@ -57,4 +57,11 @@ public class Address {
 		this.buildingName = buildingName;
 	}
 
+	public Address(Long addressId, String state, String city, String pincode, String street) {
+		this.addressId = addressId;
+		this.state = state;
+		this.city = city;
+		this.pincode = pincode;
+		this.street = street;
+	}
 }

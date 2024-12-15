@@ -1,10 +1,12 @@
 package com.service.userauthentication.dtos;
 
+import com.service.userauthentication.entities.Address;
 import com.service.userauthentication.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,5 +23,13 @@ public class UserDTO {
 	private String password;
 	private Set<Role> roles = new HashSet<>();
 	private AddressDTO address;
-	//private CartDTO cart;
+
+	public UserDTO(String firstname, String lastname, String mail, String password, String number, AddressDTO address) {
+		this.firstName = firstname;
+		this.lastName = lastname;
+		this.mobileNumber = number;
+		this.email = mail;
+		this.password = password;
+		this.address = address;
+	}
 }

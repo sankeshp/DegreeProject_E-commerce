@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -106,12 +107,12 @@ public class AddressServiceImpl implements AddressService {
 				.orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
 
 		List<User> users = userRepo.findByAddress(addressId);
-
-		users.forEach(user -> {
-			user.getAddresses().remove(addressFromDB);
-
-			userRepo.save(user);
-		});
+        for (User user : users) {
+            List<Address> addr = user.getAddresses();
+            addr.remove(addressFromDB);
+            user.setAddresses(addr);
+            userRepo.save(user);
+        };
 
 		addressRepo.deleteById(addressId);
 

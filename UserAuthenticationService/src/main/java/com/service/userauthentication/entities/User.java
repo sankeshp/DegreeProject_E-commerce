@@ -55,4 +55,15 @@ public class User {
 
 	@Version
 	private Long version;
+
+	public User(long ID, String firstname, String lastname, String mail, String password, String number, HashSet<Role> role, ArrayList<Address> address) {
+		this.userId = ID;
+		this.firstName = firstname;
+		this.lastName = lastname;
+		this.mobileNumber = number;
+		this.email = mail;
+		this.password = password;
+		this.roles = role;
+		this.addresses = address;
+	}
 }

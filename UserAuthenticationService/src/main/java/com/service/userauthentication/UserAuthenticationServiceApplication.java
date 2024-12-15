@@ -15,7 +15,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import java.util.List;
 
 @SpringBootApplication
-@EnableCaching
+        //@EnableCaching
 @SecurityScheme(name = "E-Commerce Application", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class UserAuthenticationServiceApplication implements CommandLineRunner {
 

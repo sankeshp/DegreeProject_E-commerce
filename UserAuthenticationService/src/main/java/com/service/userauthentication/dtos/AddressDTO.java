@@ -16,4 +16,12 @@ public class AddressDTO {
 	private String state;
 	private String country;
 	private String pincode;
+
+	public AddressDTO(long addressId, String street, String buildingName, String city, String state) {
+		this.addressId = addressId;
+		this.street = street;
+		this.buildingName = buildingName;
+		this.city = city;
+		this.state = state;
+	}
 }
