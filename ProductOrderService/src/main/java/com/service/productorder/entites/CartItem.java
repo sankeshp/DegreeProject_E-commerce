@@ -27,5 +27,12 @@ public class CartItem {
 	private Integer quantity;
 	private double discount;
 	private double productPrice;
-	
+
+	public CartItem(long id, Product product, int quantity, double discount, double productPrice) {
+		this.cartItemId = id;
+		this.product = product;
+		this.quantity = quantity;
+		this.discount = discount;
+		this.productPrice = productPrice;
+	}
 }

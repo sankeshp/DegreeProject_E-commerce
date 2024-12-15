@@ -33,10 +33,12 @@ public class UserInfoConfig implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
+
 	@Override
 	public String getUsername() {
 		return email;
 	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;

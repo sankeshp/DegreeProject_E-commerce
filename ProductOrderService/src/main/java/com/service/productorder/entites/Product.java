@@ -45,4 +45,10 @@ public class Product {
 	@OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<OrderItem> orderItems = new ArrayList<>();
 
+	public Product(long id, String productName, int quantity, double price) {
+		this.productId = id;
+		this.productName = productName;
+		this.quantity = quantity;
+		this.price = price;
+	}
 }
