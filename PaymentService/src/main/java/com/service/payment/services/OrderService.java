@@ -13,6 +13,6 @@ public class OrderService {
 
     public OrderDTO getOrderById(Long orderId)
     {
-        return restTemplate.getForObject("http://localhost:8081/api/public/orders/{orderId}", OrderDTO.class, orderId);
+        return restTemplate.getForObject("http://UserAuthenticationService/api/public/orders/{orderId}", OrderDTO.class, orderId);
     }
 }
