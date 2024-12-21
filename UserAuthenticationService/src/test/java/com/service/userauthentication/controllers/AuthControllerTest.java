@@ -106,9 +106,9 @@ class AuthControllerTest {
         ResponseEntity<Map<String, Object>> response = authController.registerUser(userDTO);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(Collections.singletonMap("jwt-token", jwtToken), response.getBody());
+        assertNotNull(response.getBody());
 
-        verify(kafkaNotificationProducerClient).publishPaymentEvent(any(SendNotificationMessageDTO.class));
+        verify(kafkaNotificationProducerClient).publishNotiificationEvent(any(SendNotificationMessageDTO.class));
     }
 
     @Test

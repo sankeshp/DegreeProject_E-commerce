@@ -20,7 +20,7 @@ public class SwaggerConfig {
                         .contact(new Contact().name("Sankesh Pathak").url("https://github.com/demo/").email("demo@gmail.com"))
                         .license(new License().name("License").url("/")))
                 .externalDocs(new ExternalDocumentation().description("Product and order service documentation")
-                        .url("http://localhost:8080/swagger-ui/index.html"));
+                        .url("http://localhost:8081/swagger-ui/index.html"));
     }
 
 }

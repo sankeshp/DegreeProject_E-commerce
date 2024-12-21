@@ -13,7 +13,7 @@ public class KafkaNotificationProducerClient {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void publishPaymentEvent(SendNotificationMessageDTO sendNotificationMessageDTO) {
+    public void publishNotificationEvent(SendNotificationMessageDTO sendNotificationMessageDTO) {
         kafkaTemplate.send(TOPIC, sendNotificationMessageDTO);
         System.out.println("Published notification event: " + sendNotificationMessageDTO);
     }

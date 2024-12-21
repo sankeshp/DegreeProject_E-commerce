@@ -27,4 +27,5 @@ public class Payment {
 
 	private String paymentLink;
 
+	private PaymentStatus paymentStatus;
 }

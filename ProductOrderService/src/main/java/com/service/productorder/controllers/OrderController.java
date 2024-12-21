@@ -100,7 +100,7 @@ public class OrderController {
 		sendNotificationMessageDTO.setTo(userDTO.getEmail());
 		sendNotificationMessageDTO.setSubject("Order placed");
 		sendNotificationMessageDTO.setBody("Order has been placed for"+order.getOrderItems().toString());
-		kafkaNotificationProducerClient.publishPaymentEvent(sendNotificationMessageDTO);
+		kafkaNotificationProducerClient.publishNotificationEvent(sendNotificationMessageDTO);
 		logger.info(order);
 		return new ResponseEntity<OrderDTO>(order, HttpStatus.CREATED);
 	}

@@ -71,7 +71,7 @@ class OrderServiceImplTest {
         OrderDTO result = orderService.placeOrder(userId, cartId, paymentMethod);
 
         assertNotNull(result);
-        verify(orderRepo).save(any(Order.class));
+        verify(orderRepo, times(2)).save(any(Order.class));
         verify(orderItemRepo).saveAll(anyList());
         verify(paymentService).makePayment(any(Order.class), eq(paymentMethod));
     }
@@ -168,7 +168,7 @@ class OrderServiceImplTest {
         OrderDTO result = orderService.updateOrder(1L, 1L, "Shipped");
 
         assertNotNull(result);
-        assertEquals("Shipped", order.getOrderStatus());
+        assertEquals(OrderStatus.Shipped, order.getOrderStatus());
         verify(orderRepo).findOrderByEmailAndOrderId(anyLong(), anyLong());
     }
 

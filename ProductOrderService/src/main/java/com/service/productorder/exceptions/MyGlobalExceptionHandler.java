@@ -1,7 +1,9 @@
 package com.service.productorder.exceptions;
 
+import com.service.productorder.controllers.CartController;
 import com.service.productorder.dtos.APIResponseDTO;
 import jakarta.validation.ConstraintViolationException;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +14,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestControllerAdvice
 public class MyGlobalExceptionHandler {
+
+	private static final Logger logger = LogManager.getLogger(CartController.class);
 
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<APIResponseDTO> myResourceNotFoundException(ResourceNotFoundException e) {
 		String message = e.getMessage();
 
 		APIResponseDTO res = new APIResponseDTO(message, false);
-
+		logger.error("An error occurred: ", e);
 		return new ResponseEntity<APIResponseDTO>(res, HttpStatus.NOT_FOUND);
 	}
 
@@ -30,7 +36,7 @@ public class MyGlobalExceptionHandler {
 		String message = e.getMessage();
 
 		APIResponseDTO res = new APIResponseDTO(message, false);
-
+		logger.error("An error occurred: ", e);
 		return new ResponseEntity<APIResponseDTO>(res, HttpStatus.BAD_REQUEST);
 	}
 
@@ -44,7 +50,7 @@ public class MyGlobalExceptionHandler {
 
 			res.put(fieldName, message);
 		});
-
+		logger.error("An error occurred: ", e);
 		return new ResponseEntity<Map<String, String>>(res, HttpStatus.BAD_REQUEST);
 	}
 	
@@ -58,21 +64,21 @@ public class MyGlobalExceptionHandler {
 
 			res.put(fieldName, message);
 		});
-
+		logger.error("An error occurred: ", e);
 		return new ResponseEntity<Map<String, String>>(res, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(MissingPathVariableException.class)
 	public ResponseEntity<APIResponseDTO> myMissingPathVariableException(MissingPathVariableException e) {
 		APIResponseDTO res = new APIResponseDTO(e.getMessage(), false);
-
+		logger.error("An error occurred: ", e);
 		return new ResponseEntity<APIResponseDTO>(res, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<APIResponseDTO> myDataIntegrityException(DataIntegrityViolationException e) {
 		APIResponseDTO res = new APIResponseDTO(e.getMessage(), false);
-
+		logger.error("An error occurred: ", e);
 		return new ResponseEntity<APIResponseDTO>(res, HttpStatus.BAD_REQUEST);
 	}
 }

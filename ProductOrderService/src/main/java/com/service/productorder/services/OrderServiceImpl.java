@@ -59,8 +59,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderDate(LocalDate.now());
 
 		order.setTotalAmount(cart.getTotalPrice());
-		order.setOrderStatus("Order Accepted !");
-
+		order.setOrderStatus(OrderStatus.Pending);
 		Order savedOrder = orderRepo.save(order);
 
 		List<CartItem> cartItems = cart.getCartItems();
@@ -102,7 +101,8 @@ public class OrderServiceImpl implements OrderService {
 		OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
 		orderItems.forEach(item -> orderDTO.getOrderItems().add(modelMapper.map(item, OrderItemDTO.class)));
-
+		order.setOrderStatus(OrderStatus.Success);
+		orderRepo.save(order);
 		return orderDTO;
 	}
 
@@ -181,7 +181,15 @@ public class OrderServiceImpl implements OrderService {
 			throw new ResourceNotFoundException("Order", "orderId", orderId);
 		}
 
-		order.setOrderStatus(orderStatus);
+		if(orderStatus.equals("Success")) {
+			order.setOrderStatus(OrderStatus.Success);
+		} else if(orderStatus.equals("Shipped")) {
+			order.setOrderStatus(OrderStatus.Shipped);
+		} else if(orderStatus.equals("Cancelled")) {
+			order.setOrderStatus(OrderStatus.Cancelled);
+		} else {
+			throw new APIException("Invalid order status");
+		}
 
 		return modelMapper.map(order, OrderDTO.class);
 	}

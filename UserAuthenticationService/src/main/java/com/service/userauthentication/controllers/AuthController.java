@@ -85,16 +85,14 @@ public class AuthController {
 
 		UserDTO userDTO = userService.registerUser(user);
 
-		String token = jwtUtil.generateToken(userDTO.getEmail());
-
 		SendNotificationMessageDTO sendNotificationMessageDTO = new SendNotificationMessageDTO();
 		sendNotificationMessageDTO.setTo(userDTO.getEmail());
 		sendNotificationMessageDTO.setSubject("Welcome");
 		sendNotificationMessageDTO.setBody("User has been created for "+ userDTO.getFirstName() + " " + userDTO.getLastName() );
-		kafkaNotificationProducerClient.publishPaymentEvent(sendNotificationMessageDTO);
+		kafkaNotificationProducerClient.publishNotiificationEvent(sendNotificationMessageDTO);
 
         logger.info("User created: {}", userDTO);
-		return new ResponseEntity<Map<String, Object>>(Collections.singletonMap("jwt-token", token),
+		return new ResponseEntity<>(Collections.singletonMap("user_details", userDTO),
 				HttpStatus.CREATED);
 	}
 

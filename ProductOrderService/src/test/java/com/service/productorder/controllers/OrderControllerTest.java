@@ -135,7 +135,7 @@ class OrderControllerTest {
         assertEquals(mockOrder, response.getBody());
         verify(userService, times(1)).getUserByEmail(emailId);
         verify(orderService, times(1)).placeOrder(1L, cartId, paymentMethod);
-        verify(kafkaNotificationProducerClient, times(1)).publishPaymentEvent(any(SendNotificationMessageDTO.class));
+        verify(kafkaNotificationProducerClient, times(1)).publishNotificationEvent(any(SendNotificationMessageDTO.class));
     }
 
     @Test
