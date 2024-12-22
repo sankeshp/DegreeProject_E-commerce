@@ -101,6 +101,7 @@ public class OrderController {
 		sendNotificationMessageDTO.setSubject("Order placed");
 		sendNotificationMessageDTO.setBody("Order has been placed for"+order.getOrderItems().toString());
 		kafkaNotificationProducerClient.publishNotificationEvent(sendNotificationMessageDTO);
+
 		logger.info(order);
 		return new ResponseEntity<OrderDTO>(order, HttpStatus.CREATED);
 	}

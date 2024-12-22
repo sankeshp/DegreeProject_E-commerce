@@ -1,6 +1,5 @@
 package com.service.notification.consumers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.service.notification.dtos.NotificationMessageDTO;
 import com.service.notification.service.SendNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ public class NotificationEventConsumer {
     private SendNotificationService sendNotificationService;
 
     @KafkaListener(topics = "notification-topic", groupId = "notification-service-group")
-    public void handleSendEmailEvent(NotificationMessageDTO notificationMessageDTO) throws JsonProcessingException {
+    public void handleSendEmailEvent(NotificationMessageDTO notificationMessageDTO) {
         sendNotificationService.SendNotification(notificationMessageDTO);
   }
 }

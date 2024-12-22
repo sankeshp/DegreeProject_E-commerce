@@ -34,7 +34,7 @@ public class StripePaymentGateway implements IPaymentGateway{
                                             .setType(PaymentLinkCreateParams.AfterCompletion.Type.REDIRECT)
                                             .setRedirect(
                                                     PaymentLinkCreateParams.AfterCompletion.Redirect.builder()
-                                                            .setUrl("https://scaler.com")
+                                                            .setUrl("https://scalerDemo.com")
                                                             .build()
                                             )
                                             .build()

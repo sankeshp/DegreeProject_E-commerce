@@ -13,8 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -30,14 +28,13 @@ public class CartRepoTest {
 
     @BeforeEach
     public void setUp() {
-        // Create Product
+
         Product product = new Product();
         product.setProductId(1001L);
         product.setProductName("Test Product");
         product.setPrice(100.00);
         product.setQuantity(10);
 
-        // Create CartItem
         CartItem cartItem = new CartItem();
         cartItem.setCartItemId(1L);
         cartItem.setProduct(product);
@@ -45,7 +42,6 @@ public class CartRepoTest {
         cartItem.setDiscount(10.00);
         cartItem.setProductPrice(90.00);
 
-        // Create Cart
         cart = new Cart();
         cart.setCartId(101L);
         cart.setUserId(1L);
@@ -74,15 +70,12 @@ public class CartRepoTest {
         when(cartRepo.findCartsByProductId(1001L)).thenReturn(carts1);
         List<Cart> carts = cartRepo.findCartsByProductId(productId);
 
-        // Ensure that the carts list is not empty
         assertNotNull(carts, "Carts list should not be null");
         assertFalse(carts.isEmpty(), "Carts list should not be empty");
 
-        // Ensure that the first cart has cart items
         assertNotNull(carts.get(0).getCartItems(), "Cart items should not be null");
         assertFalse(carts.get(0).getCartItems().isEmpty(), "Cart items list should not be empty");
 
-        // Ensure that the product ID is contained in the extracted product IDs
         List<Long> productIds = carts.get(0).getCartItems().stream()
                 .map(CartItem::getProduct)
                 .map(Product::getProductId)

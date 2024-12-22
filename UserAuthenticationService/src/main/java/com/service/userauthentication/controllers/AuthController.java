@@ -2,7 +2,6 @@ package com.service.userauthentication.controllers;
 
 import com.service.userauthentication.dtos.SendNotificationMessageDTO;
 import com.service.userauthentication.entities.User;
-import com.service.userauthentication.exceptions.UserNotFoundException;
 import com.service.userauthentication.dtos.LoginCredentials;
 import com.service.userauthentication.dtos.UserDTO;
 import com.service.userauthentication.security.JWTUtil;
@@ -75,7 +74,7 @@ public class AuthController {
 
 
 	@PostMapping("/register")
-	public ResponseEntity<Map<String, Object>> registerUser(@Valid @RequestBody UserDTO user) throws UserNotFoundException {
+	public ResponseEntity<Map<String, Object>> registerUser(@Valid @RequestBody UserDTO user) {
 
         logger.info("Registering user: {}", user);
 

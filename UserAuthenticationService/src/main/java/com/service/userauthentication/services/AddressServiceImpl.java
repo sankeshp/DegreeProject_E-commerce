@@ -111,7 +111,7 @@ public class AddressServiceImpl implements AddressService {
             addr.remove(addressFromDB);
             user.setAddresses(addr);
             userRepo.save(user);
-        };
+        }
 
 		addressRepo.deleteById(addressId);
 

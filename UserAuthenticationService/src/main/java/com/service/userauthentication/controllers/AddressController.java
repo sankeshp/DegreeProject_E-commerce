@@ -12,12 +12,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 @SecurityRequirement(name = "E-Commerce Application")
 public class AddressController {
 	
@@ -29,7 +27,7 @@ public class AddressController {
 
 	private static final Logger logger = LogManager.getLogger(AddressController.class);
 
-	@GetMapping("/addresses")
+	@GetMapping("/admin/addresses")
 	public ResponseEntity<List<AddressDTO>> getAddresses() {
 		logger.info("Getting all addresses...");
 		List<AddressDTO> addressDTOs = addressService.getAddresses();

@@ -29,7 +29,7 @@ public class UserAuthenticationServiceApplication implements CommandLineRunner {
     private RoleRepo roleRepo;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         try {
             Role adminRole = new Role();
             adminRole.setRoleId(AppConstants.ADMIN_ID);

@@ -3,7 +3,6 @@ package com.service.userauthentication.controllers;
 import com.service.userauthentication.dtos.SendNotificationMessageDTO;
 import com.service.userauthentication.dtos.LoginCredentials;
 import com.service.userauthentication.dtos.UserDTO;
-import com.service.userauthentication.exceptions.UserNotFoundException;
 import com.service.userauthentication.security.JWTUtil;
 import com.service.userauthentication.configs.KafkaNotificationProducerClient;
 import com.service.userauthentication.services.UserService;
@@ -92,7 +91,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void testRegisterUser() throws UserNotFoundException {
+    void testRegisterUser() {
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail("test@example.com");
         userDTO.setPassword("password");

@@ -27,23 +27,20 @@ public class PaymentService {
 
     public Payment makePayment(Order order, String paymentMethod) {
 
-        String url = "http://localhost:8082/payment/generatePaymentLink";
+        String url = "http://PaymentService/payment/generatePaymentLink";
 
-        // Prepare headers
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
         GeneratePaymentLinkRequestDTO requestBody = new GeneratePaymentLinkRequestDTO(order.getOrderId(), paymentMethod);
 
-        // Create HttpEntity containing headers and body
         HttpEntity<GeneratePaymentLinkRequestDTO> entity = new HttpEntity<>(requestBody, headers);
 
-        // Perform the request
         ResponseEntity<GeneratePaymentLinkResponseDTO> response = restTemplate.exchange(
                 url,
-                HttpMethod.GET, // HTTP method
+                HttpMethod.GET,
                 entity,
-                GeneratePaymentLinkResponseDTO.class    // Response type
+                GeneratePaymentLinkResponseDTO.class
         );
 
         Payment payment = new Payment();

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -23,9 +22,6 @@ class UserControllerTest {
 
     @Mock
     private UserService userService;
-
-    @Mock
-    private RedisTemplate<String, Object> redisTemplate;
 
     @BeforeEach
     void setUp() {

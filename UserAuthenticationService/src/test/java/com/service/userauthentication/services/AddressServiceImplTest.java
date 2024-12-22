@@ -2,7 +2,6 @@ package com.service.userauthentication.services;
 
 import com.service.userauthentication.dtos.AddressDTO;
 import com.service.userauthentication.entities.Address;
-import com.service.userauthentication.entities.User;
 import com.service.userauthentication.exceptions.APIException;
 import com.service.userauthentication.exceptions.ResourceNotFoundException;
 import com.service.userauthentication.repositories.AddressRepo;

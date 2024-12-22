@@ -3,7 +3,6 @@ package com.service.productorder.exceptions;
 import com.service.productorder.controllers.CartController;
 import com.service.productorder.dtos.APIResponseDTO;
 import jakarta.validation.ConstraintViolationException;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
