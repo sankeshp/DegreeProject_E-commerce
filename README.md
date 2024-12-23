@@ -47,13 +47,12 @@ This e-commerce project is built using a microservices architecture to provide s
 The project is implemented using the **microservices architecture**, ensuring each service is independently deployable and scalable.
 
 ### Key Components
-- **Frontend:** React.js (or specify the chosen framework)
 - **Backend:** Spring Boot
-- **Database:** MySQL/PostgreSQL
+- **Database:** MySQL
 - **Caching:** Redis
 - **Message Broker:** Kafka
 - **Service Discovery:** Eureka
-- **Build Tool:** Maven/Gradle
+- **Build Tool:** Maven
 
 ---
 
@@ -65,15 +64,15 @@ The project is implemented using the **microservices architecture**, ensuring ea
 | Eureka              | Service discovery                           |
 | Redis               | Caching and performance optimization        |
 | Kafka               | Event-driven communication                  |
-| MySQL/PostgreSQL    | Relational database                         |
+| MySQL               | Relational database                         |
 | Lombok              | Simplified Java development                 |
 | JUnit/Mockito       | Unit testing                                |
-| Logback/SLF4J       | Logging framework                           |
+| SLF4J               | Logging framework                           |
 
 ---
 
 ## Prerequisites
 - **Java 17** or later
-- **Maven/Gradle** (for build and dependency management)
+- **Maven** (for build and dependency management)
 - **Docker** (for containerized deployment, optional)
-- **Kafka**, **Redis**, and **MySQL/PostgreSQL** installed and running
+- **Kafka**, **Redis**, and **MySQL** installed and running
